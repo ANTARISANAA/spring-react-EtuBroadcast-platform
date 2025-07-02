@@ -1,0 +1,85 @@
+// App-specific styles
+.app {
+  min-height: 100vh;
+  font-family: 'Poppins', system-ui, sans-serif;
+
+  // Ensure proper font rendering
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// Global scrollbar styling
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+
+  &:hover {
+    background: #a8a8a8;
+  }
+}
+
+// Focus styles for accessibility
+*:focus {
+  outline: 2px solid #8b5cf6;
+  outline-offset: 2px;
+}
+
+// Selection styles
+::selection {
+  background-color: rgba(139, 92, 246, 0.2);
+  color: #1f2937;
+}
+
+// Loading states
+.loading {
+  opacity: 0.6;
+  pointer-events: none;
+  transition: opacity 0.2s ease-in-out;
+}
+
+// Error states
+.error {
+  border-color: #ef4444 !important;
+
+  &:focus {
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1) !important;
+  }
+}
+
+// Success states
+.success {
+  border-color: #10b981 !important;
+
+  &:focus {
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1) !important;
+  }
+}
+
+// Responsive breakpoints
+@media (max-width: 768px) {
+  .app {
+    padding: 0;
+  }
+}
+
+// Print styles
+@media print {
+  .app {
+    background: white !important;
+    color: black !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+}
