@@ -20,10 +20,10 @@ import {
 } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-import appLogo from '../../../assets/app-logo.png';
-import { APP_NAME } from '@/utils/constants';
-import i18n, { appLanguages } from '@/i18n';
 import { privateRoutes } from '@/config/privateRoutes';
+import i18n, { appLanguages } from '@/i18n';
+import { APP_NAME } from '@/utils/constants';
+import appLogo from '../../../assets/app-logo.png';
 import { globalMessages } from '../messages/common';
 
 const { Header, Sider, Content } = AntLayout;
@@ -35,25 +35,6 @@ const languageOptions = [
   { key: appLanguages.fr, label: i18n.t(globalMessages.french), flag: '🇫🇷' },
 ];
 
-  // Menu items
-const menuItems = [
-  {
-    key: privateRoutes.home.path,
-    icon: <HomeOutlined />,
-    label: i18n.t(privateRoutes.home.label),
-  },
-  {
-    key: privateRoutes.students.path,
-    icon: <TeamOutlined />,
-    label: i18n.t(privateRoutes.students.label),
-  },
-  {
-    key: privateRoutes.profile.path,
-    icon: <UserOutlined />,
-    label: i18n.t(privateRoutes.profile.label),
-  },
-];
-
 const Layout: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
   const { t, i18n } = useTranslation();
@@ -63,28 +44,52 @@ const Layout: React.FC = () => {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
+  // Menu items - moved inside component to be reactive to language changes
+  const menuItems = useMemo(
+    () => [
+      {
+        key: privateRoutes.home.path,
+        icon: <HomeOutlined />,
+        label: t(privateRoutes.home.label),
+      },
+      {
+        key: privateRoutes.students.path,
+        icon: <TeamOutlined />,
+        label: t(privateRoutes.students.label),
+      },
+      {
+        key: privateRoutes.profile.path,
+        icon: <UserOutlined />,
+        label: t(privateRoutes.profile.label),
+      },
+    ],
+    [t]
+  );
 
   // User menu items
-  const userMenuItems = useMemo(() => [
-    {
-      key: privateRoutes.profile.path,
-      icon: <UserOutlined />,
-      label: t(privateRoutes.profile.label),
-      onClick: () => navigate('/profile'),
-    },
-    {
-      type: 'divider' as const,
-    },
-    {
-      key: privateRoutes.login.path,
-      icon: <LogoutOutlined />,
-      label: t(privateRoutes.login.label),
-      onClick: () => {
-        localStorage.removeItem('authToken');
-        navigate(privateRoutes.login.path);
+  const userMenuItems = useMemo(
+    () => [
+      {
+        key: privateRoutes.profile.path,
+        icon: <UserOutlined />,
+        label: t(privateRoutes.profile.label),
+        onClick: () => navigate('/profile'),
       },
-    },
-  ], [navigate, t]);
+      {
+        type: 'divider' as const,
+      },
+      {
+        key: privateRoutes.login.path,
+        icon: <LogoutOutlined />,
+        label: t(privateRoutes.login.label),
+        onClick: () => {
+          localStorage.removeItem('authToken');
+          navigate(privateRoutes.login.path);
+        },
+      },
+    ],
+    [navigate, t]
+  );
 
   // Handle language change
   const handleLanguageChange = ({ key }: { key: string }) => {
@@ -199,16 +204,29 @@ const Layout: React.FC = () => {
 
             {/* User Menu */}
             <Dropdown
-              menu={{ items: userMenuItems }}
+              menu={{
+                items: userMenuItems,
+              }}
               placement="bottomRight"
-              arrow
             >
-              <Space style={{ cursor: 'pointer' }}>
-                <Avatar icon={<UserOutlined />} />
-                <span style={{ fontFamily: 'Poppins, sans-serif' }}>
-                  John Doe
-                </span>
-              </Space>
+              <Button
+                type="text"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 8,
+                }}
+              >
+                <Avatar
+                  size="small"
+                  style={{
+                    backgroundColor: '#8b5cf6',
+                  }}
+                >
+                  U
+                </Avatar>
+                <span>User</span>
+              </Button>
             </Dropdown>
           </Space>
         </Header>

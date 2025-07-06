@@ -1,40 +1,13 @@
 export interface Student {
-  id: string;
-  firstName: string;
-  lastName: string;
+  id: string; // UUID
+  fullName: string;
   email: string;
-  phone?: string;
-  dateOfBirth: string;
-  gender: 'male' | 'female' | 'other';
-  status: 'active' | 'inactive' | 'graduated';
-  enrollmentDate: string;
-  grade: string;
-  major: string;
-  gpa: number;
-  address?: {
-    street: string;
-    city: string;
-    state: string;
-    zipCode: string;
-    country: string;
-  };
-  emergencyContact?: {
-    name: string;
-    relationship: string;
-    phone: string;
-  };
-  createdAt: string;
-  updatedAt: string;
+  phoneNumber: string;
+  address: string;
 }
 
 export interface StudentFilters {
   search?: string;
-  status?: Student['status'];
-  gender?: Student['gender'];
-  grade?: string;
-  major?: string;
-  enrollmentDateRange?: [string, string];
-  gpaRange?: [number, number];
 }
 
 export interface StudentTableState {
@@ -51,28 +24,11 @@ export interface StudentTableState {
 }
 
 export interface StudentFormData {
-  firstName: string;
-  lastName: string;
+  id?: string;
+  fullName: string;
   email: string;
-  phone?: string;
-  dateOfBirth: string;
-  gender: Student['gender'];
-  status: Student['status'];
-  grade: string;
-  major: string;
-  gpa: number;
-  address?: {
-    street: string;
-    city: string;
-    state: string;
-    zipCode: string;
-    country: string;
-  };
-  emergencyContact?: {
-    name: string;
-    relationship: string;
-    phone: string;
-  };
+  phoneNumber: string;
+  address: string;
 }
 
 export interface StudentAction {
