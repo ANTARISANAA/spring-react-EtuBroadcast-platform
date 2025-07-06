@@ -1,4 +1,4 @@
-import { Button, Card, Space, Table, Typography } from 'antd';
+import { Button, Card, Space, Table, Typography, Spin } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { useAsyncState } from 'react-async-states';
 import { useTranslation } from 'react-i18next';
@@ -14,7 +14,7 @@ const { Title } = Typography;
 export default function StudentsPage() {
   const { t } = useTranslation();
 
-  const { data, isPending, isError, isSuccess } = useAsyncState.auto(
+  const { data, isPending, isError, isSuccess, isInitial } = useAsyncState.auto(
     {
       producer: getStudentsProducer,
       autoRunArgs: [{ filters: {} }],
@@ -32,56 +32,68 @@ export default function StudentsPage() {
 
   const columns = useStudentColumns();
 
-  return isError ? (
-    <BaseErrorAlert message={t(messages.errorLoadingStudents)} />
-  ) : (
-    <div className="p-6">
-      <div className="mb-6">
-        <Title level={2}>{t(messages.students)}</Title>
+  if (isError) {
+    return <BaseErrorAlert message={t(messages.errorLoadingStudents)} />;
+  }
+
+  if (isPending || isInitial) {
+    return (
+      <div className="p-6 flex items-center justify-center min-h-[400px]">
+        <Spin size="large" />
       </div>
+    );
+  }
 
-      <StudentFilters
-        filters={{}}
-        onFiltersChange={handleFiltersChange}
-        onClearFilters={handleClearFilters}
-        loading={isPending}
-      />
-
-      <Card>
-        <div className="mb-4 flex items-center justify-between">
-          <Space>
-            <Button
-              type="primary"
-              icon={<PlusOutlined />}
-              onClick={handleAddStudent}
-            >
-              {t(messages.addStudent)}
-            </Button>
-          </Space>
+  if (isSuccess) {
+    return (
+      <div className="p-6">
+        <div className="mb-6">
+          <Title level={2}>{t(messages.students)}</Title>
         </div>
 
-        <Table
-          columns={columns}
-          dataSource={isSuccess ? data.student : []}
-          rowKey="id"
+        <StudentFilters
+          filters={{}}
+          onFiltersChange={handleFiltersChange}
+          onClearFilters={handleClearFilters}
           loading={isPending}
-          pagination={{
-            showSizeChanger: true,
-            showQuickJumper: true,
-            showTotal: (total, range) =>
-              t(globalMessages.tableTotal, {
-                from: range[0],
-                to: range[1],
-                total,
-                item: t(messages.students),
-              }),
-          }}
-          scroll={{ x: 1200 }}
-          locale={{
-            emptyText: t(messages.noStudentsFound),
-          }}
         />
-      </Card>
-    </div>
-  );
+
+        <Card>
+          <div className="mb-4 flex items-center justify-between">
+            <Space>
+              <Button
+                type="primary"
+                icon={<PlusOutlined />}
+                onClick={handleAddStudent}
+              >
+                {t(messages.addStudent)}
+              </Button>
+            </Space>
+          </div>
+
+          <Table
+            columns={columns}
+            dataSource={data.student || []}
+            rowKey="id"
+            loading={isPending}
+            pagination={{
+              showSizeChanger: true,
+              showQuickJumper: true,
+              showTotal: (total, range) =>
+                t(globalMessages.tableTotal, {
+                  from: range[0],
+                  to: range[1],
+                  total,
+                  item: t(messages.students),
+                }),
+            }}
+            scroll={{ x: 1200 }}
+            locale={{
+              emptyText: t(messages.noStudentsFound),
+            }}
+          />
+        </Card>
+      </div>
+    );
+  }
 }

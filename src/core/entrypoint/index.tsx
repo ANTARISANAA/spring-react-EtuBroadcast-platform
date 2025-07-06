@@ -1,16 +1,15 @@
-import { App as AntApp, Layout } from 'antd';
+import { App as AntApp } from 'antd';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import Login from '@/pages/Auth/Login';
-import Register from '@/pages/Auth/Register';
-import Dashboard from '@/pages/Dashboard/Dashboard';
 import Home from '@/pages/Home/Home';
 import NotFound from '@/pages/NotFound/NotFound';
 import Profile from '@/pages/Profile/Profile';
-import Settings from '@/pages/Settings/Settings';
 import StudentsPage from '@/pages/Students';
 import DefaultErrorBoundary from '../components/errorBoundary/DefaultErrorBoundary';
 import { ModalProvider } from '../components/modals';
 import ThemeProvider from '../theme';
+import LayoutComponent from '@/core/components/Layout/Layout';
+import { privateRoutes } from '@/config/privateRoutes';
 
 export default function Entrypoint() {
   return (
@@ -22,16 +21,12 @@ export default function Entrypoint() {
               <div className="app">
                 <Routes>
                   {/* Public routes */}
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/register" element={<Register />} />
-
+                  <Route path={privateRoutes.login.path} element={<Login />} />
                   {/* Protected routes with layout */}
-                  <Route path="/" element={<Layout />}>
+                  <Route path={privateRoutes.home.path} element={<LayoutComponent />}>
                     <Route index element={<Home />} />
-                    <Route path="dashboard" element={<Dashboard />} />
-                    <Route path="students" element={<StudentsPage />} />
-                    <Route path="profile" element={<Profile />} />
-                    <Route path="settings" element={<Settings />} />
+                    <Route path={privateRoutes.students.path} element={<StudentsPage />} />
+                    <Route path={privateRoutes.profile.path} element={<Profile />} />
                   </Route>
 
                   {/* 404 route */}

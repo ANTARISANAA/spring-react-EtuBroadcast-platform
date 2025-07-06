@@ -1,6 +1,7 @@
 const scope = 'core.messages.common';
 export const globalMessages = Object.freeze({
   // This scope is only for global messages
+  appName: 'core.messages.appName',
   yes: `${scope}.yes`,
   cancel: `${scope}.cancel`,
   welcome: `${scope}.welcome`,
@@ -10,4 +11,14 @@ export const globalMessages = Object.freeze({
   no: `${scope}.no`,
   refresh: `${scope}.refresh`,
   tableTotal: `${scope}.tableTotal`,
+  appDescription: `${scope}.appDescription`,
+  welcomeMessage: `${scope}.welcomeMessage`,
+  language: `${scope}.language`,
+  english: `${scope}.english`,
+  french: `${scope}.french`,
+  save: `${scope}.save`,
+  name: `${scope}.name`,
+  email: `${scope}.email`,
+  validationRequired: `${scope}.validationRequired`,
+  validationEmail: `${scope}.validationEmail`,
 });

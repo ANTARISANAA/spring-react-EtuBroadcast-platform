@@ -1,5 +1,6 @@
 {
   "core.messages": {
+    "appName": "EduBroadcast",
     "common": {
       "welcome": "Bienvenue",
       "loading": "Chargement...",
@@ -21,7 +22,20 @@
       "reset": "Réinitialiser",
       "close": "Fermer",
       "open": "Ouvrir",
-      "tableTotal": "{{from}}-{{to} of {{total}} {{item}}"
+      "tableTotal": "{{from}}-{{to} of {{total}} {{item}}",
+      "appDescription": "Système de gestion et de notifications pour étudiants",
+      "welcomeMessage": "Bienvenue sur notre application {{appName}}",
+      "language": "Langue",
+      "english": "Anglais",
+      "french": "Français"
+    },
+    "routes":{
+      "home": "Accueil",
+      "students": "Étudiants",
+      "profile": "Profil",
+      "logout": "Déconnexion",
+      "login": "Connexion",
+      "register": "S'inscrire"
     }
   },
   "navigation": {

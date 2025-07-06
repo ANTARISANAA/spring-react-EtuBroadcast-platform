@@ -1,5 +1,6 @@
 {
   "core.messages": {
+    "appName": "EduBroadcast",
     "common": {
       "welcome": "Welcome",
       "loading": "Loading...",

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   Layout as AntLayout,
   Avatar,
@@ -10,22 +10,49 @@ import {
   theme,
 } from 'antd';
 import {
-  DashboardOutlined,
   GlobalOutlined,
   HomeOutlined,
   LogoutOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  SettingOutlined,
   TeamOutlined,
   UserOutlined,
 } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import appLogo from '../../../assets/app-logo.png';
+import { APP_NAME } from '@/utils/constants';
+import i18n, { appLanguages } from '@/i18n';
+import { privateRoutes } from '@/config/privateRoutes';
+import { globalMessages } from '../messages/common';
 
 const { Header, Sider, Content } = AntLayout;
 const { Title } = Typography;
+
+// Language options
+const languageOptions = [
+  { key: appLanguages.en, label: i18n.t(globalMessages.english), flag: '🇺🇸' },
+  { key: appLanguages.fr, label: i18n.t(globalMessages.french), flag: '🇫🇷' },
+];
+
+  // Menu items
+const menuItems = [
+  {
+    key: privateRoutes.home.path,
+    icon: <HomeOutlined />,
+    label: i18n.t(privateRoutes.home.label),
+  },
+  {
+    key: privateRoutes.students.path,
+    icon: <TeamOutlined />,
+    label: i18n.t(privateRoutes.students.label),
+  },
+  {
+    key: privateRoutes.profile.path,
+    icon: <UserOutlined />,
+    label: i18n.t(privateRoutes.profile.label),
+  },
+];
 
 const Layout: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -35,71 +62,29 @@ const Layout: React.FC = () => {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
-  console.log('Layout component loaded');
 
-  // Language options
-  const languageOptions = [
-    { key: 'en', label: 'English', flag: '🇺🇸' },
-    { key: 'fr', label: 'Français', flag: '🇫🇷' },
-  ];
-
-  // Menu items
-  const menuItems = [
-    {
-      key: '/',
-      icon: <HomeOutlined />,
-      label: t('navigation.home'),
-    },
-    {
-      key: '/dashboard',
-      icon: <DashboardOutlined />,
-      label: t('navigation.dashboard'),
-    },
-    {
-      key: '/students',
-      icon: <TeamOutlined />,
-      label: t('navigation.students'),
-    },
-    {
-      key: '/profile',
-      icon: <UserOutlined />,
-      label: t('navigation.profile'),
-    },
-    {
-      key: '/settings',
-      icon: <SettingOutlined />,
-      label: t('navigation.settings'),
-    },
-  ];
 
   // User menu items
-  const userMenuItems = [
+  const userMenuItems = useMemo(() => [
     {
-      key: 'profile',
+      key: privateRoutes.profile.path,
       icon: <UserOutlined />,
-      label: t('navigation.profile'),
+      label: t(privateRoutes.profile.label),
       onClick: () => navigate('/profile'),
-    },
-    {
-      key: 'settings',
-      icon: <SettingOutlined />,
-      label: t('navigation.settings'),
-      onClick: () => navigate('/settings'),
     },
     {
       type: 'divider' as const,
     },
     {
-      key: 'logout',
+      key: privateRoutes.login.path,
       icon: <LogoutOutlined />,
-      label: t('navigation.logout'),
+      label: t(privateRoutes.login.label),
       onClick: () => {
-        // Handle logout
         localStorage.removeItem('authToken');
-        navigate('/login');
+        navigate(privateRoutes.login.path);
       },
     },
-  ];
+  ], [navigate, t]);
 
   // Handle language change
   const handleLanguageChange = ({ key }: { key: string }) => {
@@ -148,7 +133,7 @@ const Layout: React.FC = () => {
               fontFamily: 'Poppins, sans-serif',
             }}
           >
-            {collapsed ? '' : 'My App'}
+            {collapsed ? '' : APP_NAME}
           </Title>
         </div>
         <Menu

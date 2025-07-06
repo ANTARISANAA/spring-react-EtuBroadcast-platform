@@ -2,6 +2,8 @@ import React from 'react';
 import { Avatar, Button, Card, Form, Input, Space, Typography } from 'antd';
 import { MailOutlined, UserOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
+import { globalMessages } from '@/core/components/messages/common';
+import { userMock } from '@/utils/constants';
 
 const { Title } = Typography;
 
@@ -22,9 +24,9 @@ const Profile: React.FC = () => {
             <Avatar size={64} icon={<UserOutlined />} />
             <div>
               <Title level={3} className="mb-0">
-                John Doe
+                {userMock.name}
               </Title>
-              <span className="text-gray-500">john.doe@email.com</span>
+              <span className="text-gray-500">{userMock.email}</span>
             </div>
           </div>
 
@@ -32,8 +34,8 @@ const Profile: React.FC = () => {
             form={form}
             layout="vertical"
             initialValues={{
-              name: 'John Doe',
-              email: 'john.doe@email.com',
+              name: userMock.name,
+              email: userMock.email,
             }}
             onFinish={onFinish}
           >
@@ -56,7 +58,7 @@ const Profile: React.FC = () => {
             </Form.Item>
             <Form.Item>
               <Button type="primary" htmlType="submit">
-                Save Changes
+                {t(globalMessages.save)}
               </Button>
             </Form.Item>
           </Form>
