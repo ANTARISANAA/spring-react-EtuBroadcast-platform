@@ -17,9 +17,6 @@ export const privateRoutes = Object.freeze({
         path: '/login',
         label: routesMessages.login,
     },
-    register: {
-        path: '/register',
-        label: routesMessages.register,
-    },
+
 });
 

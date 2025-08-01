@@ -14,6 +14,9 @@ export const httpErrors: { [key: string]: string } = {
   '500': 'http.error.internalServerError',
   '503': 'http.error.serviceUnavailable',
   
+  // Custom error codes
+  'email.conflict': 'api.error.email.conflict',
+  
   // Legacy mappings for backward compatibility
   'bad.request': 'http.error.bad.request',
   'not.found': 'http.error.not.found',

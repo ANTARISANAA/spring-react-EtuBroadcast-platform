@@ -1,19 +1,48 @@
 import React from 'react';
-import { Button, Card, Form, Input, Typography } from 'antd';
+import { Button, Card, Form, Input, Typography, App } from 'antd';
 import {  LockOutlined, UserOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
+import { useAsync } from 'react-async-states';
 import appLogo from '../../assets/app-logo.png';
+import { authApi } from '@/config/api/auth';
+import { useAuth } from '@/core/context/AuthContext';
+import type { LoginRequest } from '@/utils/types';
 
 const { Title, Text } = Typography;
 
 const Login: React.FC = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const { login } = useAuth();
+  const { notification } = App.useApp();
   const [form] = Form.useForm();
 
-  const onFinish = (values: any) => {
-    console.log('Login values:', values);
-    // Handle login logic here
+  const {
+    isPending,
+    source: { runc },
+  } = useAsync({
+    producer: async ({ args: [credentials] }: { args: [LoginRequest] }) => {
+      return await authApi.login(credentials);
+    },
+  });
+
+  const onFinish = (values: LoginRequest) => {
+    runc({
+      args: [values],
+      onSuccess: ({ data: response }) => {
+        login(response);
+        notification.success({
+          message: t('auth.loginSuccess'),
+        });
+        navigate('/');
+      },
+      onError: ({ data: error }) => {
+        notification.error({
+          message: t((error as any).cause?.message || 'auth.loginError'),
+        });
+      },
+    });
   };
 
   return (
@@ -70,42 +99,13 @@ const Login: React.FC = () => {
                 placeholder={t('auth.enterPassword')}
               />
             </Form.Item>
-
             <Form.Item>
-              <div className="flex items-center justify-between">
-                <Form.Item name="remember" valuePropName="checked" noStyle>
-                  <label className="flex items-center">
-                    <input type="checkbox" className="mr-2" />
-                    {t('auth.rememberMe')}
-                  </label>
-                </Form.Item>
-                <Link
-                  to="/forgot-password"
-                  className="text-blue-600 hover:text-blue-800"
-                >
-                  {t('auth.forgotPassword')}
-                </Link>
-              </div>
-            </Form.Item>
-
-            <Form.Item>
-              <Button type="primary" htmlType="submit" block>
+              <Button type="primary" htmlType="submit" block loading={isPending}>
                 {t('auth.signIn')}
               </Button>
             </Form.Item>
           </Form>
 
-          <div className="text-center">
-            <Text className="text-gray-600">
-              {t('auth.dontHaveAccount')}
-              <Link
-                to="/register"
-                className="text-blue-600 hover:text-blue-800"
-              >
-                {t('auth.signUp')}
-              </Link>
-            </Text>
-          </div>
         </Card>
       </div>
     </div>

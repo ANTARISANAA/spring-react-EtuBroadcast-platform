@@ -26,6 +26,13 @@ const responseMiddleware = async (error: ErrorType) => {
 API.interceptors.request.use(
   (config) => {
     config.headers['Content-Type'] = 'application/json';
+    
+    // Add JWT token if available
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`;
+    }
+    
     return config;
   },
 
@@ -38,6 +45,13 @@ API.interceptors.response.use((response) => response.data, responseMiddleware);
 NOTIFICATION_API.interceptors.request.use(
   (config) => {
     config.headers['Content-Type'] = 'application/json';
+    
+    // Add JWT token if available
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`;
+    }
+    
     return config;
   },
 

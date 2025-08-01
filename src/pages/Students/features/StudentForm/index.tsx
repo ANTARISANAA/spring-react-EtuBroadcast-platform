@@ -1,13 +1,21 @@
 import { App, Form } from 'antd';
 import FormBuilder from 'antd-form-builder';
 import type { Producer } from 'async-states';
-import { useAsync } from 'react-async-states';
+import { createSource, useAsync } from 'react-async-states';
 import { useTranslation } from 'react-i18next';
 import { ModalFooter } from '@/core/components/modals/AppModal';
 import type { ApiError } from '@/utils/types';
 import { messages } from '../../messages';
 import type { Student, StudentFormData } from '../../types';
 import { useStudentFields } from './fields';
+import { useModal } from '@/core/components/modals';
+import { getStudentsProducer } from '../../data/producers';
+import { DEFAULT_SEARCH_PARAMS } from '../..';
+
+export const studentsListResource = createSource(
+  'students-list',
+  getStudentsProducer,
+);
 
 interface StudentFormProps {
   initialValues?: Partial<StudentFormData>;
@@ -22,6 +30,7 @@ export default function StudentForm({
 }: StudentFormProps) {
   const { t } = useTranslation();
   const [form] = Form.useForm();
+  const modal = useModal();
   const meta = useStudentFields();
   const { notification } = App.useApp();
 
@@ -52,7 +61,8 @@ export default function StudentForm({
             ]
           ),
         });
-        close();
+        modal.close();
+        studentsListResource.runc({args: [DEFAULT_SEARCH_PARAMS]});
       },
     });
   };

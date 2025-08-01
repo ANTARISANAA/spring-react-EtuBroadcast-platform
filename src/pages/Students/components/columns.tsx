@@ -43,7 +43,6 @@ export const useStudentColumns = (): ColumnsType<Student> => {
       title: t(messages.actions),
       key: 'actions',
       fixed: 'right',
-      width: 120,
       render: (record) => <Actions student={record} />,
     },
   ];

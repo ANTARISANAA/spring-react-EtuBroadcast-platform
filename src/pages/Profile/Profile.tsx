@@ -1,20 +1,28 @@
 import React from 'react';
-import { Avatar, Button, Card, Form, Input, Space, Typography } from 'antd';
-import { MailOutlined, UserOutlined } from '@ant-design/icons';
+import { Avatar, Card, Form, Input, Space, Typography, Tag } from 'antd';
+import { MailOutlined, UserOutlined, CrownOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
-import { globalMessages } from '@/core/components/messages/common';
-import { userMock } from '@/utils/constants';
+import { useAuth } from '@/core/context/AuthContext';
 
-const { Title } = Typography;
+const { Title, Text } = Typography;
 
 const Profile: React.FC = () => {
   const { t } = useTranslation();
+  const { admin } = useAuth();
   const [form] = Form.useForm();
 
-  const onFinish = (values: any) => {
-    console.log('Profile update:', values);
-    // Handle profile update logic here
-  };
+  // If no admin data, show loading or redirect
+  if (!admin) {
+    return (
+      <div className="mx-auto max-w-xl">
+        <Card>
+          <div className="text-center">
+            <Text type="secondary">{t('profile.loading')}</Text>
+          </div>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="mx-auto max-w-xl">
@@ -24,9 +32,14 @@ const Profile: React.FC = () => {
             <Avatar size={64} icon={<UserOutlined />} />
             <div>
               <Title level={3} className="mb-0">
-                {userMock.name}
+                {admin.fullName}
               </Title>
-              <span className="text-gray-500">{userMock.email}</span>
+              <div className="flex items-center space-x-2">
+                <span className="text-gray-500">{admin.email}</span>
+                <Tag color="gold" icon={<CrownOutlined />}>
+                  {admin.role}
+                </Tag>
+              </div>
             </div>
           </div>
 
@@ -34,32 +47,29 @@ const Profile: React.FC = () => {
             form={form}
             layout="vertical"
             initialValues={{
-              name: userMock.name,
-              email: userMock.email,
+              fullName: admin.fullName,
+              email: admin.email,
+              role: admin.role,
             }}
-            onFinish={onFinish}
+            disabled={true} // Make form read-only
           >
             <Form.Item
-              name="name"
-              label="Name"
-              rules={[{ required: true, message: t('validation.required') }]}
+              name="fullName"
+              label={t('profile.fullName')}
             >
               <Input prefix={<UserOutlined />} />
             </Form.Item>
             <Form.Item
               name="email"
-              label="Email"
-              rules={[
-                { required: true, message: t('validation.required') },
-                { type: 'email', message: t('validation.email') },
-              ]}
+              label={t('profile.email')}
             >
               <Input prefix={<MailOutlined />} />
             </Form.Item>
-            <Form.Item>
-              <Button type="primary" htmlType="submit">
-                {t(globalMessages.save)}
-              </Button>
+            <Form.Item
+              name="role"
+              label={t('profile.role')}
+            >
+              <Input prefix={<CrownOutlined />} />
             </Form.Item>
           </Form>
         </Space>

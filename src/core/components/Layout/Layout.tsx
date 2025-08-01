@@ -21,28 +21,35 @@ import {
 import { useTranslation } from 'react-i18next';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { privateRoutes } from '@/config/privateRoutes';
-import i18n, { appLanguages } from '@/i18n';
+import  { appLanguages } from '@/i18n';
 import { APP_NAME } from '@/utils/constants';
 import appLogo from '../../../assets/app-logo.png';
 import { globalMessages } from '../messages/common';
+import { useAuth } from '@/core/context/AuthContext';
 
 const { Header, Sider, Content } = AntLayout;
 const { Title } = Typography;
 
-// Language options
-const languageOptions = [
-  { key: appLanguages.en, label: i18n.t(globalMessages.english), flag: '🇺🇸' },
-  { key: appLanguages.fr, label: i18n.t(globalMessages.french), flag: '🇫🇷' },
-];
+// Language options - moved inside component to be reactive to language changes
 
 const Layout: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
+  const { logout, admin } = useAuth();
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
+
+  // Language options - moved inside component to be reactive to language changes
+  const languageOptions = useMemo(
+    () => [
+      { key: appLanguages.en, label: t(globalMessages.english), flag: '🇺🇸' },
+      { key: appLanguages.fr, label: t(globalMessages.french), flag: '🇫🇷' },
+    ],
+    [t]
+  );
 
   // Menu items - moved inside component to be reactive to language changes
   const menuItems = useMemo(
@@ -79,16 +86,16 @@ const Layout: React.FC = () => {
         type: 'divider' as const,
       },
       {
-        key: privateRoutes.login.path,
+        key: 'logout',
         icon: <LogoutOutlined />,
-        label: t(privateRoutes.login.label),
+        label: t('auth.signOut'),
         onClick: () => {
-          localStorage.removeItem('authToken');
+          logout();
           navigate(privateRoutes.login.path);
         },
       },
     ],
-    [navigate, t]
+    [navigate, t, logout]
   );
 
   // Handle language change
@@ -223,9 +230,9 @@ const Layout: React.FC = () => {
                     backgroundColor: '#8b5cf6',
                   }}
                 >
-                  U
+                  {admin?.fullName?.charAt(0) || 'A'}
                 </Avatar>
-                <span>User</span>
+                <span>{admin?.fullName || 'Admin'}</span>
               </Button>
             </Dropdown>
           </Space>

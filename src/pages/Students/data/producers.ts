@@ -25,9 +25,8 @@ export const editStudentProducer: Producer<
   Student,
   [StudentFormData],
   ApiError
-> = async ({ args: [student] }) =>{console.log(student);
-
-return  await API.put(API_PATHS.students.update(student.id), student);}
+> = async ({ args: [{id, ...student}] }) =>
+  await API.put(API_PATHS.students.update(id), student);
 
 export const deleteStudentProducer: Producer<
   void,

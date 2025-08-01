@@ -10,31 +10,39 @@ import { ModalProvider } from '../components/modals';
 import ThemeProvider from '../theme';
 import LayoutComponent from '@/core/components/Layout/Layout';
 import { privateRoutes } from '@/config/privateRoutes';
+import { AuthProvider } from '@/core/context/AuthContext';
+import { ProtectedRoute } from '@/core/components/ProtectedRoute';
 
 export default function Entrypoint() {
   return (
     <ThemeProvider>
       <DefaultErrorBoundary>
         <AntApp>
-          <ModalProvider>
-            <Router>
-              <div className="app">
-                <Routes>
-                  {/* Public routes */}
-                  <Route path={privateRoutes.login.path} element={<Login />} />
-                  {/* Protected routes with layout */}
-                  <Route path={privateRoutes.home.path} element={<LayoutComponent />}>
-                    <Route index element={<Home />} />
-                    <Route path={privateRoutes.students.path} element={<StudentsPage />} />
-                    <Route path={privateRoutes.profile.path} element={<Profile />} />
-                  </Route>
+          <AuthProvider>
+            <ModalProvider>
+              <Router>
+                <div className="app">
+                  <Routes>
+                    {/* Public routes */}
+                    <Route path={privateRoutes.login.path} element={<Login />} />
+                    {/* Protected routes with layout */}
+                    <Route path={privateRoutes.home.path} element={
+                      <ProtectedRoute>
+                        <LayoutComponent />
+                      </ProtectedRoute>
+                    }>
+                      <Route index element={<Home />} />
+                      <Route path={privateRoutes.students.path} element={<StudentsPage />} />
+                      <Route path={privateRoutes.profile.path} element={<Profile />} />
+                    </Route>
 
-                  {/* 404 route */}
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </div>
-            </Router>
-          </ModalProvider>
+                    {/* 404 route */}
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </div>
+              </Router>
+            </ModalProvider>
+          </AuthProvider>
         </AntApp>
       </DefaultErrorBoundary>
     </ThemeProvider>

@@ -19,6 +19,11 @@ import _omit from 'lodash/omit';
 import { parseSearch } from '@/core/table/utils';
 
 const { Title } = Typography;
+export const DEFAULT_SEARCH_PARAMS = {
+  page: '0',
+  size: '10',
+  sort: 'fullName,asc',
+};
 
 export default function StudentsPage() {
   const { t } = useTranslation();
@@ -32,9 +37,7 @@ export default function StudentsPage() {
   // Parse current search parameters
   const parsedSearch = useMemo(
     () => ({
-      page: '0',
-      size: '10',
-      sort: 'fullName,asc',
+      ...DEFAULT_SEARCH_PARAMS,
       ...parseSearchParamsFromLocation(location),
     }),
     [location],
@@ -164,7 +167,6 @@ export default function StudentsPage() {
                     item: t(messages.students),
                   }),
               }}
-              scroll={{ x: 1200 }}
               locale={{
                 emptyText: t(messages.noStudentsFound),
               }}

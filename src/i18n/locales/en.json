@@ -28,7 +28,18 @@
       "confirmationMessage": "Are you sure you want to proceed?",
       "confirm": "Confirm",
       "tableTotal": "Showing {{from}} to {{to}} of {{total}} {{item}}",
-      "appDescription": "Student Management and Notification System"
+      "appDescription": "Student Management and Notification System",
+      "welcomeMessage": "Welcome to our {{appName}} application",
+      "language": "Language",
+      "english": "English",
+      "french": "French"
+    },
+    "routes": {
+      "home": "Home",
+      "students": "Students",
+      "profile": "Profile",
+      "logout": "Logout",
+      "login": "Login"
     }
   },
   "navigation": {
@@ -38,8 +49,7 @@
     "profile": "Profile",
     "settings": "Settings",
     "logout": "Logout",
-    "login": "Login",
-    "register": "Register"
+    "login": "Login"
   },
   "auth": {
     "email": "Email",
@@ -53,7 +63,10 @@
     "welcomeBack": "Welcome back! Please sign in to your account.",
     "enterEmail": "Enter your email",
     "enterPassword": "Enter your password",
-    "dontHaveAccount": "Don't have an account?"
+    "dontHaveAccount": "Don't have an account?",
+    "loginSuccess": "Successfully logged in",
+    "loginError": "Login failed. Please check your credentials.",
+    "logoutSuccess": "Successfully logged out"
   },
   "validation": {
     "required": "This field is required",
@@ -61,6 +74,19 @@
     "minLength": "Minimum {{min}} characters required",
     "maxLength": "Maximum {{max}} characters allowed",
     "passwordMatch": "Passwords must match"
+  },
+  "profile": {
+    "fullName": "Full Name",
+    "email": "Email",
+    "role": "Role",
+    "loading": "Loading profile..."
+  },
+  "api": {
+    "error": {
+      "email": {
+        "conflict": "This email address is already in use. Please use a different email address."
+      }
+    }
   },
   "utils": {
     "validation": {

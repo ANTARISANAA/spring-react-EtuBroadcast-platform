@@ -29,7 +29,7 @@
       "confirm": "Confirmer",
       "tableTotal": "Affichage de {{from}} à {{to}} sur {{total}} {{item}}",
       "appDescription": "Système de gestion et de notifications pour étudiants",
-      "welcomeMessage": "Bienvenue sur notre application {{appName}}",
+      "welcomeMessage": "Bienvenue sur notre application EduBroadcast",
       "language": "Langue",
       "english": "Anglais",
       "french": "Français"
@@ -39,8 +39,7 @@
       "students": "Étudiants",
       "profile": "Profil",
       "logout": "Déconnexion",
-      "login": "Connexion",
-      "register": "S'inscrire"
+      "login": "Connexion"
     }
   },
   "navigation": {
@@ -50,8 +49,7 @@
     "profile": "Profil",
     "settings": "Paramètres",
     "logout": "Déconnexion",
-    "login": "Connexion",
-    "register": "S'inscrire"
+    "login": "Connexion"
   },
   "auth": {
     "email": "E-mail",
@@ -65,7 +63,10 @@
     "welcomeBack": "Bon retour ! Veuillez vous connecter à votre compte.",
     "enterEmail": "Entrez votre e-mail",
     "enterPassword": "Entrez votre mot de passe",
-    "dontHaveAccount": "Vous n'avez pas de compte ?"
+    "dontHaveAccount": "Vous n'avez pas de compte ?",
+    "loginSuccess": "Connexion réussie",
+    "loginError": "Échec de la connexion. Veuillez vérifier vos identifiants.",
+    "logoutSuccess": "Déconnexion réussie"
   },
   "validation": {
     "required": "Ce champ est obligatoire",
@@ -73,6 +74,19 @@
     "minLength": "Minimum {{min}} caractères requis",
     "maxLength": "Maximum {{max}} caractères autorisés",
     "passwordMatch": "Les mots de passe doivent correspondre"
+  },
+  "profile": {
+    "fullName": "Nom complet",
+    "email": "E-mail",
+    "role": "Rôle",
+    "loading": "Chargement du profil..."
+  },
+  "api": {
+    "error": {
+      "email": {
+        "conflict": "Cette adresse e-mail est déjà utilisée. Veuillez utiliser une adresse e-mail différente."
+      }
+    }
   },
   "utils": {
     "validation": {
@@ -101,7 +115,7 @@
       "internalServerError": "Erreur interne du serveur. Veuillez réessayer plus tard",
       "serviceUnavailable": "Service temporairement indisponible. Veuillez réessayer plus tard",
       "timeout": "Délai d'attente dépassé. Veuillez réessayer",
-      "conflict": "Conflit. La ressource existe déjà ou a été modifiée",
+      "conflict": "L'email que vous avez entré existe déjà. Veuillez choisir un autre.",
       "tooManyRequests": "Trop de requêtes. Veuillez attendre avant de réessayer"
     }
   },
