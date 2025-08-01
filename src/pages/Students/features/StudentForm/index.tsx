@@ -6,12 +6,12 @@ import { useTranslation } from 'react-i18next';
 import { ModalFooter } from '@/core/components/modals/AppModal';
 import type { ApiError } from '@/utils/types';
 import { messages } from '../../messages';
-import type { StudentFormData } from '../../types';
+import type { Student, StudentFormData } from '../../types';
 import { useStudentFields } from './fields';
 
 interface StudentFormProps {
   initialValues?: Partial<StudentFormData>;
-  producer?: Producer<void, [StudentFormData], ApiError>;
+  producer?: Producer<Student, [StudentFormData], ApiError>;
   isViewMode?: boolean;
 }
 
@@ -36,7 +36,7 @@ export default function StudentForm({
 
   const handleSubmit = async (formValues: StudentFormData) => {
     runc({
-      args: [formValues],
+      args: [{...formValues, id: initialValues?.id}],
       onError: ({ data: error }) => {
         notification.error({
           message: t(error.cause.message),

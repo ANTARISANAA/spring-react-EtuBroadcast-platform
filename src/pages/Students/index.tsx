@@ -2,6 +2,9 @@ import { Button, Card, Space, Spin, Table, Typography } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { useAsyncState } from 'react-async-states';
 import { useTranslation } from 'react-i18next';
+import { useCallback, useMemo } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import type {  TablePaginationConfig } from 'antd/es/table';
 import BaseErrorAlert from '@/core/components/Errors/BaseErrorAlert';
 import { globalMessages } from '@/core/components/messages/common';
 import { useModal } from '@/core/components/modals';
@@ -10,24 +13,95 @@ import { StudentFilters } from './components/filterFields';
 import { getStudentsProducer } from './data/producers';
 import { AddStudentModal } from './features/AddStudent';
 import { messages } from './messages';
+import { parseSearchParamsFromLocation } from './utils';
+import { pagingKeys } from './types';
+import _omit from 'lodash/omit';
+import { parseSearch } from '@/core/table/utils';
 
 const { Title } = Typography;
 
 export default function StudentsPage() {
   const { t } = useTranslation();
   const modal = useModal();
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const { data, isPending, isError, isSuccess, isInitial } = useAsyncState.auto(
-    {
-      producer: getStudentsProducer,
-      autoRunArgs: [{ filters: {} }],
-    },
-    []
+ const pageSearchParams = useMemo(
+    () => parseSearch(searchParams.toString()),
+    [searchParams],
+  );
+  // Parse current search parameters
+  const parsedSearch = useMemo(
+    () => ({
+      page: '0',
+      size: '10',
+      sort: 'fullName,asc',
+      ...parseSearchParamsFromLocation(location),
+    }),
+    [location],
   );
 
-  const handleFiltersChange = () => {};
+  // Create paging object for table
+  const paging = useMemo(
+    () => ({
+      current: parseInt(parsedSearch.page) + 1, // Ant Design uses 1-based indexing
+      pageSize: parseInt(parsedSearch.size),
+      sort: parsedSearch.sort,
+    }),
+    [parsedSearch],
+  );
 
-  const handleClearFilters = () => {};
+  // Pagination change handler
+  const setPagingParams = useCallback(
+    (pagination: TablePaginationConfig, _filters: any, sorter: any, extra: any) => {
+      const { action } = extra;
+      
+      // Handle sorter (can be array or single object)
+      const currentSorter = Array.isArray(sorter) ? sorter[0] : sorter;
+      
+      setSearchParams({
+        // Set the page number based on the action (sort or page change)
+        page: action === 'sort' ? '0' : String((pagination.current as number) - 1),
+        // Set the number of items per page
+        size: String(pagination.pageSize),
+        sort: currentSorter?.order
+          ? `${currentSorter.columnKey},${currentSorter.order === 'ascend' ? 'asc' : 'desc'}` // Set the sorting column and order
+          : paging.sort, // Use the default sorting if no sorter is provided
+      });
+    },
+    [paging.sort, setSearchParams],
+  );
+
+  const resetFilterParams = useCallback(() => {
+    const params = Object.keys(searchParams).reduce(
+      (acc, key) => ({ ...acc, [key]: null }),
+      {},
+    );
+
+    setSearchParams(params);
+  }, [searchParams, setSearchParams]);
+
+  const setFilterParams = useCallback(
+    (params: any) => {
+      setSearchParams({ ...params, ...paging });
+    },
+    [setSearchParams, paging],
+  );
+
+    const filterParams = useCallback(() => {
+    return _omit(pageSearchParams, ...pagingKeys);
+  }, [searchParams]);
+
+
+  const { data, isPending, isError, isSuccess } = useAsyncState(
+    {
+      lazy: false,
+      producer: getStudentsProducer,
+      payload: {
+        params: searchParams,
+      },
+    },
+    [searchParams],
+  );
 
   const columns = useStudentColumns();
 
@@ -35,7 +109,7 @@ export default function StudentsPage() {
     return <BaseErrorAlert message={t(messages.errorLoadingStudents)} />;
   }
 
-  if (isPending || isInitial) {
+  if (isPending) {
     return (
       <div className="flex min-h-[400px] items-center justify-center p-6">
         <Spin size="large" />
@@ -52,10 +126,10 @@ export default function StudentsPage() {
           </div>
 
           <StudentFilters
-            filters={{}}
-            onFiltersChange={handleFiltersChange}
-            onClearFilters={handleClearFilters}
+            filters={filterParams()}
             loading={isPending}
+            onReset={resetFilterParams}
+            setFilterParams={setFilterParams}
           />
 
           <Card>
@@ -73,10 +147,13 @@ export default function StudentsPage() {
 
             <Table
               columns={columns}
-              dataSource={data?.student || []}
+              dataSource={data || []}
               rowKey="id"
               loading={isPending}
+              onChange={setPagingParams}
               pagination={{
+                current: paging.current,
+                pageSize: paging.pageSize,
                 showSizeChanger: true,
                 showQuickJumper: true,
                 showTotal: (total, range) =>

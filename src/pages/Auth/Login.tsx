@@ -1,8 +1,9 @@
 import React from 'react';
-import { Button, Card, Divider, Form, Input, Space, Typography } from 'antd';
-import { GoogleOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
+import { Button, Card, Form, Input, Typography } from 'antd';
+import {  LockOutlined, UserOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import appLogo from '../../assets/app-logo.png';
 
 const { Title, Text } = Typography;
 
@@ -19,11 +20,21 @@ const Login: React.FC = () => {
     <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
       <div className="w-full max-w-md space-y-8">
         <div className="text-center">
+          <div className="flex flex-col items-center mb-6">
+            <img 
+              src={appLogo} 
+              alt={t('core.messages.appName')} 
+              className="w-24 mb-4"
+            />
+            <Title level={1} className="text-gradient mb-2">
+              {t('core.messages.appName')}
+            </Title>
+          </div>
           <Title level={2} className="text-gradient">
             {t('auth.signIn')}
           </Title>
           <Text className="text-gray-600">
-            Welcome back! Please sign in to your account.
+            {t('auth.welcomeBack')}
           </Text>
         </div>
 
@@ -43,7 +54,7 @@ const Login: React.FC = () => {
                 { type: 'email', message: t('validation.email') },
               ]}
             >
-              <Input prefix={<UserOutlined />} placeholder="Enter your email" />
+              <Input prefix={<UserOutlined />} placeholder={t('auth.enterEmail')} />
             </Form.Item>
 
             <Form.Item
@@ -56,7 +67,7 @@ const Login: React.FC = () => {
             >
               <Input.Password
                 prefix={<LockOutlined />}
-                placeholder="Enter your password"
+                placeholder={t('auth.enterPassword')}
               />
             </Form.Item>
 
@@ -84,15 +95,9 @@ const Login: React.FC = () => {
             </Form.Item>
           </Form>
 
-          <Divider>or</Divider>
-
-          <Button icon={<GoogleOutlined />} block size="large" className="mb-4">
-            Continue with Google
-          </Button>
-
           <div className="text-center">
             <Text className="text-gray-600">
-              Don't have an account?{' '}
+              {t('auth.dontHaveAccount')}
               <Link
                 to="/register"
                 className="text-blue-600 hover:text-blue-800"

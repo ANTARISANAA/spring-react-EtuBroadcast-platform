@@ -5,6 +5,7 @@ import {
   getErrorType,
   getFromMessages,
 } from './utils';
+import { httpErrors } from './httpErrors';
 
 interface ParsedHttpError {
   type: string;
@@ -30,13 +31,18 @@ export function parseHttpError(error: ErrorType): ParsedHttpError {
 
       errorResult.retriable = extractedError.retriable || false;
 
-      if (status === 403) {
-        errorResult.cause = getFromMessages('forbidden');
-      } else {
+      // First try to get error from HTTP status code
+      if (status && httpErrors[status.toString()]) {
+        errorResult.cause = getFromMessages(status.toString());
+      } else if (extractedError.code && httpErrors[extractedError.code]) {
+        // Fallback to error code from API response
         errorResult.cause = getFromMessages(
           extractedError.code,
           extractedError.message
         );
+      } else {
+        // Default to unknown error
+        errorResult.cause = getFromMessages('unknown');
       }
 
       break;

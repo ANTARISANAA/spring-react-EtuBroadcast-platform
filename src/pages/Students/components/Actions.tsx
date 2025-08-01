@@ -1,3 +1,4 @@
+import DeleteOutlined from '@ant-design/icons/DeleteOutlined';
 import EditOutlined from '@ant-design/icons/EditOutlined';
 import EyeOutlined from '@ant-design/icons/EyeOutlined';
 import SendOutlined from '@ant-design/icons/SendOutlined';
@@ -7,6 +8,7 @@ import { useModal } from '@/core/components/modals';
 import { EditStudentModal } from '../features/EditStudent';
 import { SendInvitationModal } from '../features/SendNotification';
 import { ViewStudenttModal } from '../features/ViewStudent';
+import { DeleteStudentModal } from '../features/DeleteStudent';
 import { messages } from '../messages';
 import type { Student } from '../types';
 
@@ -16,6 +18,7 @@ type Actions = {
 export default function Actions({ student }: Actions) {
   const { t } = useTranslation();
   const modal = useModal();
+console.log(student, 'student');
 
   return (
     <TableActions
@@ -53,6 +56,16 @@ export default function Actions({ student }: Actions) {
               title: t(messages.sendStudentNotification, {
                 studentName: student.fullName,
               }),
+            });
+          },
+        },
+        {
+          title: t(messages.deleteStudent),
+          buttonIcon: <DeleteOutlined />,
+          onClick: () => {
+            modal.open(DeleteStudentModal.key, {
+              studentId: student.id,
+              studentName: student.fullName,
             });
           },
         },

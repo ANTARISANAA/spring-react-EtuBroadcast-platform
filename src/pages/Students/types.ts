@@ -35,3 +35,5 @@ export interface StudentAction {
   type: 'view' | 'edit' | 'delete';
   student: Student;
 }
+
+export const pagingKeys = ['page', 'size', 'sort'] as string[];

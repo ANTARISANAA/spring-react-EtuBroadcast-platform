@@ -28,6 +28,7 @@ export const messages = Object.freeze({
   noStudentsFound: `${scope}.noStudentsFound`,
   studentAddedSuccessfully: `${scope}.studentAddedSuccessfully`,
   studentUpdatedSuccessfully: `${scope}.studentUpdatedSuccessfully`,
+  deleteStudentSuccess: `${scope}.deleteStudentSuccess`,
   errorLoadingStudents: `${scope}.errorLoadingStudents`,
 
   // Modal titles
@@ -39,4 +40,14 @@ export const messages = Object.freeze({
   resendInvitaion: `${scope}.resendInvitaion`,
   resendInvitationSuccess: `${scope}.resendInvitationSuccess`,
   resendInvitatonDescription: `${scope}.resendInvitatonDescription`,
+
+  // Delete confirmation
+  deleteStudentConfirmation: `${scope}.deleteStudentConfirmation`,
+  deleteStudentWarning: `${scope}.deleteStudentWarning`,
+
+  // Message field
+  messageLabel: `${scope}.messageLabel`,
+  messageRequired: `${scope}.messageRequired`,
+  messageMaxLength: `${scope}.messageMaxLength`,
+  messagePlaceholder: `${scope}.messagePlaceholder`,
 });

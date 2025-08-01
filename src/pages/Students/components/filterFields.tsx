@@ -6,38 +6,32 @@ import type { StudentFilters } from '../types';
 
 interface StudentFiltersProps {
   filters: StudentFilters;
-  onFiltersChange: (filters: StudentFilters) => void;
-  onClearFilters: () => void;
   loading?: boolean;
+  onReset: () => void;
+  setFilterParams: (params: any) => void;
 }
 
 export function StudentFilters({
   filters,
-  onFiltersChange,
-  onClearFilters,
   loading = false,
+  onReset,
+  setFilterParams,
 }: StudentFiltersProps) {
   const { t } = useTranslation();
   const [form] = Form.useForm();
 
-  const handleValuesChange = (changedValues: any, allValues: any) => {
-    const newFilters: StudentFilters = {
-      search: allValues.search,
-    };
-    onFiltersChange(newFilters);
-  };
-
   const handleClearFilters = () => {
     form.resetFields();
-    onClearFilters();
+    onReset?.();
   };
 
+  
   return (
     <Card className="mb-4">
       <Form
         form={form}
         layout="vertical"
-        onValuesChange={handleValuesChange}
+        onFinish={(values) => setFilterParams(values)}
         initialValues={filters}
       >
         <Row gutter={[16, 16]}>

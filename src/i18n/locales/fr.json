@@ -61,7 +61,11 @@
     "rememberMe": "Se souvenir de moi",
     "signIn": "Se connecter",
     "signUp": "S'inscrire",
-    "signOut": "Se déconnecter"
+    "signOut": "Se déconnecter",
+    "welcomeBack": "Bon retour ! Veuillez vous connecter à votre compte.",
+    "enterEmail": "Entrez votre e-mail",
+    "enterPassword": "Entrez votre mot de passe",
+    "dontHaveAccount": "Vous n'avez pas de compte ?"
   },
   "validation": {
     "required": "Ce champ est obligatoire",
@@ -81,6 +85,36 @@
         "numeric": "Veuillez entrer un nombre valide"
       }
     }
+  },
+  "http": {
+    "error": {
+      "unknown": "Une erreur inconnue s'est produite",
+      "networkError": "Erreur réseau. Veuillez vérifier votre connexion internet",
+      "forbidden": "Accès interdit. Vous n'avez pas la permission d'effectuer cette action",
+      "bad": {
+        "request": "Requête incorrecte. Veuillez vérifier vos données et réessayer"
+      },
+      "not": {
+        "found": "Ressource introuvable. L'élément demandé n'existe pas"
+      },
+      "unauthorized": "Accès non autorisé. Veuillez vous connecter pour continuer",
+      "internalServerError": "Erreur interne du serveur. Veuillez réessayer plus tard",
+      "serviceUnavailable": "Service temporairement indisponible. Veuillez réessayer plus tard",
+      "timeout": "Délai d'attente dépassé. Veuillez réessayer",
+      "conflict": "Conflit. La ressource existe déjà ou a été modifiée",
+      "tooManyRequests": "Trop de requêtes. Veuillez attendre avant de réessayer"
+    }
+  },
+  "errorBoundary": {
+    "retryLater": "Veuillez réessayer plus tard",
+    "retry": "Réessayer",
+    "somethingWrong": "Quelque chose s'est mal passé",
+    "unknownError": "Une erreur inconnue s'est produite",
+    "copyError": "Copier l'Erreur",
+    "stackTrace": "Trace de la Pile",
+    "accessDeniedDescription": "Vous n'avez pas la permission d'accéder à cette page",
+    "returnHome": "Retour à l'Accueil",
+    "unexpected": "Une erreur inattendue s'est produite"
   },
   "messages": {
     "welcomeMessage": "Bienvenue dans notre application !",
@@ -110,13 +144,20 @@
       "noStudentsFound": "Aucun étudiant trouvé",
       "studentAddedSuccessfully": "Étudiant ajouté avec succès",
       "studentUpdatedSuccessfully": "Étudiant mis à jour avec succès",
+      "deleteStudentSuccess": "Étudiant supprimé avec succès",
+      "deleteStudentConfirmation": "Êtes-vous sûr de vouloir supprimer {{studentName}} ? Cette action ne peut pas être annulée.",
+      "deleteStudentWarning": "Cette action supprimera définitivement l'étudiant du système. Toutes les données associées seront perdues.",
       "errorLoadingStudents": "Erreur lors du chargement des étudiants",
       "editStudentTitle": "Modifier l'Étudiant {{studentName}}",
       "viewStudentDetails": "Détails de l'Étudiant - {{studentName}}",
       "sendStudentNotification": "Envoyer une Notification à {{studentName}}",
       "resendInvitaion": "Envoyer une Invitation",
       "resendInvitationSuccess": "Invitation envoyée avec succès à {{studentName}}",
-      "resendInvitatonDescription": "Êtes-vous sûr de vouloir envoyer une invitation à {{studentName}} ?"
+      "resendInvitatonDescription": "Êtes-vous sûr de vouloir envoyer une invitation à {{studentName}} ?",
+      "messageLabel": "Message",
+      "messageRequired": "Veuillez entrer un message",
+      "messageMaxLength": "Le message ne peut pas dépasser 500 caractères",
+      "messagePlaceholder": "Entrez votre message pour {{studentName}}..."
     },
     "Home": {
       "quickActions": "Actions Rapides",

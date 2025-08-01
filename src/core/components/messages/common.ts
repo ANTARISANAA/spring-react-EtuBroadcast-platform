@@ -21,4 +21,5 @@ export const globalMessages = Object.freeze({
   email: `${scope}.email`,
   validationRequired: `${scope}.validationRequired`,
   validationEmail: `${scope}.validationEmail`,
+  delete: `${scope}.delete`,
 });

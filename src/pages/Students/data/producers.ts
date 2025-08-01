@@ -1,37 +1,48 @@
 import type { Producer } from 'async-states';
-import { API } from '@/config/api';
+import { API, NOTIFICATION_API } from '@/config/api';
 import { API_PATHS } from '@/utils/apiPaths';
 import type { ApiError } from '@/utils/types';
 import type { Student, StudentFormData } from '../types';
-import { mockStudents } from './mockData';
 
 export const getStudentsProducer: Producer<
-  { student: Student[] },
-  [{ filters: Record<string, any> }],
+  Student[],
+ [Record<string, any>],
   ApiError
-> = async ({ args: [{ filters }] }) =>
-  // await API.get(API_PATHS.students.base, { params: { filters } });
-  await Promise.resolve({ student: mockStudents });
+> = async ({ payload: { params }   }) => 
+
+  await API.get(API_PATHS.students.base, { 
+    params
+  });
 
 export const addStudentProducer: Producer<
-  void,
+  Student,
   [StudentFormData],
   ApiError
 > = async ({ args: [student] }) =>
-  // await API.post(API_PATHS.students.base, student);
-  console.log('student', student);
+  await API.post(API_PATHS.students.base, student);
 
 export const editStudentProducer: Producer<
-  void,
+  Student,
   [StudentFormData],
   ApiError
-> = async ({ args: [student] }) =>
-  // await API.put(API_PATHS.students.update(student.id), student);
-  console.log('student', student);
+> = async ({ args: [student] }) =>{console.log(student);
 
-export const sendInvitationProducer: Producer<
+return  await API.put(API_PATHS.students.update(student.id), student);}
+
+export const deleteStudentProducer: Producer<
   void,
-  [{ studentId: string }],
+  [string],
   ApiError
-> = async ({ args: [{ studentId }] }) =>
-  await API.post(`${API_PATHS.students.sendInvitation(studentId)}`);
+> = async ({ args: [studentId] }) =>
+  await API.delete(API_PATHS.students.delete(studentId));
+
+export const sendNotificationProducer: Producer<
+  void,
+  [{ studentId: string; message: string; type: string }],
+  ApiError
+> = async ({ args: [{ studentId, message, type }] }) =>
+  await NOTIFICATION_API.post(API_PATHS.notifications.base, {
+    studentId,
+    message,
+    type,
+  });
