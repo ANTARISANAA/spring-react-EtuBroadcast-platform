@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Card, Form, Input, Typography, App } from 'antd';
+import { Button, Card, Form, Input, Typography, App, Spin } from 'antd';
 import {  LockOutlined, UserOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import {  useNavigate } from 'react-router-dom';
@@ -14,9 +14,30 @@ const { Title, Text } = Typography;
 const Login: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, isAuthenticated, isLoading } = useAuth();
   const { notification } = App.useApp();
   const [form] = Form.useForm();
+
+  // Redirect if already authenticated
+  React.useEffect(() => {
+    if (!isLoading && isAuthenticated) {
+      navigate('/');
+    }
+  }, [isAuthenticated, isLoading, navigate]);
+
+  // Show loading while checking authentication
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <Spin size="large" />
+      </div>
+    );
+  }
+
+  // Don't render login form if already authenticated
+  if (isAuthenticated) {
+    return null;
+  }
 
   const {
     isPending,

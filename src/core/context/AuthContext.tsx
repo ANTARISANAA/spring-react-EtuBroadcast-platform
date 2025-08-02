@@ -1,9 +1,11 @@
-import React, { createContext, useContext, useReducer, useEffect } from 'react';
+import React, { createContext, useContext, useReducer, useEffect, useState } from 'react';
 import type { AuthState, LoginResponse } from '@/utils/types';
+import { isTokenValid, clearAuthData } from '@/utils/auth';
 
 interface AuthContextType extends AuthState {
   login: (response: LoginResponse) => void;
   logout: () => void;
+  isLoading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -42,6 +44,7 @@ const initialState: AuthState = {
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     // Initialize auth state from localStorage
@@ -50,6 +53,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     
     if (token && admin) {
       try {
+        // Validate token before restoring session
+        if (!isTokenValid(token)) {
+          console.log('Stored token is invalid or expired, clearing auth data');
+          clearAuthData();
+          setIsLoading(false);
+          return;
+        }
+        
         const adminData = JSON.parse(admin);
         dispatch({
           type: 'INITIALIZE',
@@ -59,12 +70,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             token,
           },
         });
+        console.log('Auth state restored from localStorage');
       } catch (error) {
         console.error('Error parsing stored auth data:', error);
-        localStorage.removeItem('token');
-        localStorage.removeItem('admin');
+        clearAuthData();
       }
+    } else {
+      console.log('No stored auth data found');
     }
+    
+    // Mark initialization as complete
+    setIsLoading(false);
   }, []);
 
   const login = (response: LoginResponse) => {
@@ -74,8 +90,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const logout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('admin');
+    clearAuthData();
     dispatch({ type: 'LOGOUT' });
   };
 
@@ -83,6 +98,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     ...state,
     login,
     logout,
+    isLoading,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
