@@ -1,6 +1,6 @@
 import { Button, Card, Space, Spin, Table, Typography } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { useAsyncState } from 'react-async-states';
+import { createSource, useAsyncState } from 'react-async-states';
 import { useTranslation } from 'react-i18next';
 import { useCallback, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
@@ -24,6 +24,11 @@ export const DEFAULT_SEARCH_PARAMS = {
   size: '10',
   sort: 'fullName,asc',
 };
+
+export const studentsListResource = createSource(
+  'students-list',
+  getStudentsProducer,
+);
 
 export default function StudentsPage() {
   const { t } = useTranslation();
@@ -98,7 +103,7 @@ export default function StudentsPage() {
   const { data, isPending, isError, isSuccess } = useAsyncState(
     {
       lazy: false,
-      producer: getStudentsProducer,
+      source: studentsListResource,
       payload: {
         params: searchParams,
       },

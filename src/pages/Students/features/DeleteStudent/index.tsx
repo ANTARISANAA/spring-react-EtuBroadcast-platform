@@ -11,6 +11,7 @@ import i18n from '@/i18n';
 import { deleteStudentProducer } from '../../data/producers';
 import { messages } from '../../messages';
 import { globalMessages } from '@/core/components/messages/common';
+import { DEFAULT_SEARCH_PARAMS, studentsListResource } from '../..';
 
 function DeleteStudent() {
   const params = useModalParams<{ studentName: string; studentId: string }>();
@@ -36,7 +37,7 @@ function DeleteStudent() {
         });
         close();
         // Refresh the page to show updated student list
-        window.location.reload();
+        studentsListResource.runc({args: [DEFAULT_SEARCH_PARAMS]});
       },
     });
   };

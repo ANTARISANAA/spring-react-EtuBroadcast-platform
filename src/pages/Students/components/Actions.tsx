@@ -18,7 +18,6 @@ type Actions = {
 export default function Actions({ student }: Actions) {
   const { t } = useTranslation();
   const modal = useModal();
-console.log(student, 'student');
 
   return (
     <TableActions
