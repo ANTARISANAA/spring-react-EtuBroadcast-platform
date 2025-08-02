@@ -23,6 +23,11 @@ export const messages = Object.freeze({
   // Filters
   searchStudents: `${scope}.searchStudents`,
   clearFilters: `${scope}.clearFilters`,
+  searchPlaceholder: `${scope}.searchPlaceholder`,
+  searchByNamePlaceholder: `${scope}.searchByNamePlaceholder`,
+  searchByEmailPlaceholder: `${scope}.searchByEmailPlaceholder`,
+  searchByPhonePlaceholder: `${scope}.searchByPhonePlaceholder`,
+  searchByAddressPlaceholder: `${scope}.searchByAddressPlaceholder`,
 
   // Messages
   noStudentsFound: `${scope}.noStudentsFound`,

@@ -25,26 +25,36 @@ export function StudentFilters({
     onReset?.();
   };
 
+  const handleSearch = (values: any) => {
+    // Remove empty values
+    const cleanValues = Object.keys(values).reduce((acc, key) => {
+      if (values[key] && values[key].trim() !== '') {
+        acc[key] = values[key].trim();
+      }
+      return acc;
+    }, {} as any);
+    
+    setFilterParams(cleanValues);
+  };
   
   return (
     <Card className="mb-4">
       <Form
         form={form}
         layout="vertical"
-        onFinish={(values) => setFilterParams(values)}
+        onFinish={handleSearch}
         initialValues={filters}
       >
         <Row gutter={[16, 16]}>
-          <Col xs={24} sm={12} md={8} lg={6}>
+          <Col span={16}>
             <Form.Item name="search" label={t(messages.searchStudents)}>
               <Input
-                placeholder={t(messages.searchStudents)}
+                placeholder={t('pages.Students.searchPlaceholder')}
                 prefix={<SearchOutlined />}
                 allowClear
               />
             </Form.Item>
           </Col>
-
           <Col xs={24} sm={12} md={8} lg={6}>
             <Form.Item label=" " className="mb-0">
               <Space>

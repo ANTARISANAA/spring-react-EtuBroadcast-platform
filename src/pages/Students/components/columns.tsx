@@ -32,11 +32,13 @@ export const useStudentColumns = (): ColumnsType<Student> => {
       title: t(messages.phoneNumber),
       key: 'phoneNumber',
       dataIndex: 'phoneNumber',
+      sorter: true,
     },
     {
       title: t(messages.address),
       key: 'address',
       dataIndex: 'address',
+      sorter: true,
       ellipsis: true,
     },
     {

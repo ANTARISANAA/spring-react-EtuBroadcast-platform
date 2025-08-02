@@ -168,10 +168,15 @@
       "resendInvitaion": "Envoyer une Invitation",
       "resendInvitationSuccess": "Invitation envoyée avec succès à {{studentName}}",
       "resendInvitatonDescription": "Êtes-vous sûr de vouloir envoyer une invitation à {{studentName}} ?",
-      "messageLabel": "Message",
-      "messageRequired": "Veuillez entrer un message",
-      "messageMaxLength": "Le message ne peut pas dépasser 500 caractères",
-      "messagePlaceholder": "Entrez votre message pour {{studentName}}..."
+             "messageLabel": "Message",
+       "messageRequired": "Veuillez entrer un message",
+       "messageMaxLength": "Le message ne peut pas dépasser 500 caractères",
+       "messagePlaceholder": "Entrez votre message pour {{studentName}}...",
+       "searchPlaceholder": "Rechercher par nom, email, téléphone ou adresse...",
+       "searchByNamePlaceholder": "Rechercher par nom complet...",
+       "searchByEmailPlaceholder": "Rechercher par email...",
+       "searchByPhonePlaceholder": "Rechercher par numéro de téléphone...",
+       "searchByAddressPlaceholder": "Rechercher par adresse..."
     },
     "Home": {
       "quickActions": "Actions Rapides",
