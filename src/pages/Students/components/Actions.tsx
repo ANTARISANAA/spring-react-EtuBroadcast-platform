@@ -52,6 +52,7 @@ export default function Actions({ student }: Actions) {
             modal.open(SendInvitationModal.key, {
               studentId: student.id,
               studentName: student.fullName,
+              studentEmail: student.email,
               title: t(messages.sendStudentNotification, {
                 studentName: student.fullName,
               }),

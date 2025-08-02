@@ -12,7 +12,7 @@ import { sendNotificationProducer } from '../../data/producers';
 import { messages } from '../../messages';
 
 function SendInvitation() {
-  const params = useModalParams<{ studentName: string; studentId: string }>();
+  const params = useModalParams<{ studentName: string; studentId: string, studentEmail: string }>();
   const { t } = useTranslation();
   const { notification } = App.useApp();
   const { close } = useModal();
@@ -24,8 +24,9 @@ function SendInvitation() {
 
   const onSubmitForm = (values: { message: string }) => {
     runc({
-      args: [{ 
+      args: [{
         studentId: params?.studentId,
+        targets: params?.studentEmail,
         message: values.message || `Invitation sent to ${params?.studentName}`,
         type: 'CREATE'
       }],
@@ -51,7 +52,7 @@ function SendInvitation() {
             studentName: params?.studentName,
           })}
         </p>
-        
+
         <Form.Item
           name="message"
           label={t(messages.messageLabel)}
@@ -76,7 +77,7 @@ function SendInvitation() {
           />
         </Form.Item>
       </div>
-      
+
       <div className="mr-3">
         <ModalFooter okButtonProps={{ loading: isPending }} />
       </div>

@@ -37,11 +37,17 @@ export const deleteStudentProducer: Producer<
 
 export const sendNotificationProducer: Producer<
   void,
-  [{ studentId: string; message: string; type: string }],
+  [{ studentId: string; targets?: string; message: string; type: string }],
   ApiError
-> = async ({ args: [{ studentId, message, type }] }) =>
+> = async ({ args: [{ studentId, targets, message, type }] }) => {
+  console.log(targets);
   await NOTIFICATION_API.post(API_PATHS.notifications.base, {
     studentId,
     message,
     type,
+  }, {
+    params: {
+      targets
+    }
   });
+}
